@@ -196,7 +196,7 @@ public class ConnectorByWifiIntent extends ActionBarActivity {
 		}
 
 		private void updateGuiOnNet(NetInfo net) {
-			mNetMsg.setText(onNetText+": "+net.name);
+			mNetMsg.setText(onNetText+": "+net.name+", start searching and connecting to peer devices");
 			mConnButton.setText(searchConnectText);
 		}
 

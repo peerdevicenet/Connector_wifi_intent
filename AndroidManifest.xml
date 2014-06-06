@@ -46,7 +46,9 @@
         
         <activity
             android:name="com.xconns.peerdevicenet.samples.connector_wifi_intent.ConnectorByWifiIntent"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

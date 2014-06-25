@@ -65,7 +65,6 @@ public class ConnectorByWifiIntent extends ActionBarActivity {
 		private ArrayAdapter<String> mPeerListAdapter;
 		private ListView mPeerListView;
 
-		private HashMap<String, DeviceInfo> discoveredDevices = new HashMap<String, DeviceInfo>();
 		private DeviceInfo mDevice = null; // my own device info
 		private NetInfo mNet = null; // network my device connect to
 		// peer connection parameters
@@ -113,8 +112,7 @@ public class ConnectorByWifiIntent extends ActionBarActivity {
 			mDoneButton.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					//shutdon router by calling stopService
-					Intent intent = new Intent(activity,
-							com.xconns.peerdevicenet.core.RouterService.class);
+					Intent intent = new Intent(Router.ACTION_ROUTER_SHUTDOWN);
 					activity.stopService(intent);
 						//
 					activity.finish();
@@ -210,8 +208,13 @@ public class ConnectorByWifiIntent extends ActionBarActivity {
 		
 		private void addDeviceToList(DeviceInfo dev) {
 			mPeerListAdapter.add(dev.name+" : "+dev.addr);
+			mPeerListAdapter.notifyDataSetChanged();
 		}
 
+		private void delDeviceFromList(DeviceInfo dev) {
+			mPeerListAdapter.remove(dev.name+" : "+dev.addr);
+			mPeerListAdapter.notifyDataSetChanged();
+		}
 
 		private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
@@ -232,13 +235,7 @@ public class ConnectorByWifiIntent extends ActionBarActivity {
 					boolean uSSL = intent.getBooleanExtra(Router.USE_SSL, false);
 					device = new DeviceInfo(pname,paddr,pport);
 					Log.d(TAG, "onSearchFoundDevice: " + device);
-					if (discoveredDevices.containsKey(device.addr)) {
-						Log.d(TAG, "already discovered, drop it");
-						return;
-					}
-					discoveredDevices.put(device.addr, device);
 
-					Log.d(TAG, "---a2");
 					// after find devices
 					// auto connect to them
 					// connect from device with small ip to device with large ip
@@ -270,8 +267,15 @@ public class ConnectorByWifiIntent extends ActionBarActivity {
 					paddr = intent.getStringExtra(Router.PEER_ADDR);
 					pport = intent.getStringExtra(Router.PEER_PORT);
 					device = new DeviceInfo(pname,paddr,pport);
+					delDeviceFromList(device);
 					Log.d(TAG, "a device disconnected: " + device.addr);
 				} else if (Router.ACTION_GET_CONNECTED_PEERS.equals(action)) {
+					String[] names = intent.getStringArrayExtra(Router.PEER_NAMES);
+					String[] addrs = intent.getStringArrayExtra(Router.PEER_ADDRS);
+					String[] ports = intent.getStringArrayExtra(Router.PEER_PORTS);
+					for(int i=0;i<names.length;i++) {
+						addDeviceToList(new DeviceInfo(names[i], addrs[i], ports[1]));
+					}
 					Log.d(TAG, "get_connected_peers");
 				} else if (Router.ACTION_CONNECTING.equals(action)) {
 					pname = intent.getStringExtra(Router.PEER_NAME);

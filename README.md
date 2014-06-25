@@ -7,7 +7,7 @@ It includes Router project as a library project. So it will instantiate a router
 
 1. In AndroidManifest.xml, add the following permission to enable accessing router APIs:
 
-	<uses-permission android:name="com.xconns.peerdevicenet.permission.REMOTE_MESSAGING" />
+		<uses-permission android:name="com.xconns.peerdevicenet.permission.REMOTE_MESSAGING" />
 
 	Also since we embed a router instance and we want to expose it for other apps to access, we need to add all Router's manifest info into here.
 

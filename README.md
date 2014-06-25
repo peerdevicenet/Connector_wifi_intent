@@ -15,21 +15,21 @@ It includes Router project as a library project. So it will instantiate a router
 
 3. This connector has a single activity ConnectorByWifiIntent with a simple GUI:
 
-	* a TextView showing which network is connected
-	* a button to start/stop peer search
-	* a ListView showing found and connected peer devices
-	* a button to shutdown and disconnect router
+		* a TextView showing which network is connected
+		* a button to start/stop peer search
+		* a ListView showing found and connected peer devices
+		* a button to shutdown and disconnect router
 
 4. The major components for talking to ConnectionService:
 	
-	* intenting api: various intent actions (definedin Router.java) to send messages to router ConnectionService, sent thru activity.startService().
-	* broadcast receiver: register to receive callbacks messages from router.
+		* intenting api: various intent actions (definedin Router.java) to send messages to router ConnectionService, sent thru activity.startService().
+		* broadcast receiver: register to receive callbacks messages from router.
 
 5. These components are created and destroyed following normal life cycle conventions:
 
-	* in activity's onCreate() or fragment's onCreateView(), start Router's ConnectionService, set up intent filter and register broadcast receiver.
-	* in onDestroy(), unregister broadcast receiver.
-	* Please note we donot kill ConnectionService inside onDestroy(). Connectors setup router's connections so that other apps (Chat, Rotate) can communicate, so we keep router alive by startService(). Router must be explicitly killed by first unbinding all clients and call stopService() with intent ACTION_ROUTER_SHUTDOWN.
+		* in activity's onCreate() or fragment's onCreateView(), start Router's ConnectionService, set up intent filter and register broadcast receiver.
+		* in onDestroy(), unregister broadcast receiver.
+		* Please note we donot kill ConnectionService inside onDestroy(). Connectors setup router's connections so that other apps (Chat, Rotate) can communicate, so we keep router alive by startService(). Router must be explicitly killed by first unbinding all clients and call stopService() with intent ACTION_ROUTER_SHUTDOWN.
 
 6. Typical interaction with ConnectionService involves sending a intent message to router by calling startService() and receive router's reply message at broadcast receiver. Typical workflow for network detection, peer search and device connection consist of the following steps:
 

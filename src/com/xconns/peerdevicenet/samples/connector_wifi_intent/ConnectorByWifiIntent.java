@@ -1,15 +1,11 @@
 package com.xconns.peerdevicenet.samples.connector_wifi_intent;
 
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -26,9 +22,6 @@ import android.widget.TextView;
 import com.xconns.peerdevicenet.DeviceInfo;
 import com.xconns.peerdevicenet.NetInfo;
 import com.xconns.peerdevicenet.Router;
-import com.xconns.peerdevicenet.RouterConnectionClient;
-import com.xconns.peerdevicenet.core.RouterService;
-import com.xconns.peerdevicenet.samples.connector_wifi_intent.R;
 
 public class ConnectorByWifiIntent extends ActionBarActivity {
 
@@ -48,7 +41,7 @@ public class ConnectorByWifiIntent extends ActionBarActivity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
-		private static final String TAG = "ByeBye";
+		private static final String TAG = "ConnectorWifiIntent";
 
 		private Activity activity = null;
 

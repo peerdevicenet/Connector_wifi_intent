@@ -1,7 +1,7 @@
 Connector_wifi_intent
 =====================
 
-This sample connector using Router's ConnectionService intenting api to discover and connect to peer devices.
+This sample connector using Router's ConnectionService intenting api to discover and connect to peer devices. It communicates thru external wifi router or WifiDirect network setup among a group of WifiDirect enabled devices.
 
 It includes Router project as a library project. So it will instantiate a router service directly, running in a separate process. 
 

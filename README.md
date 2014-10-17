@@ -11,7 +11,10 @@ It includes Router project as a library project. So it will instantiate a router
 
 	Also since we embed a router instance and we want to expose it for other apps to access, we need to add all Router's manifest info into here.
 
-2. Since router is included as a library project, we dont need to copy any interface files separately.
+2. Create a Router instance inside this app by one of two ways:
+
+          * download Router project and include it as a library project.
+          * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-router:1.1.4'.
 
 3. This connector has a single activity ConnectorByWifiIntent with a simple GUI:
 

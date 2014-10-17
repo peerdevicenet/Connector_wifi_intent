@@ -1,5 +1,8 @@
 package com.xconns.peerdevicenet.samples.connector_wifi_intent;
 
+import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,8 +11,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -37,6 +38,7 @@ public class ConnectorByWifiIntent extends Activity {
 	private ArrayAdapter<String> mPeerListAdapter;
 	private ListView mPeerListView;
 
+	private HashSet<String> connPeers = new HashSet<String>();
 	private DeviceInfo mDevice = null; // my own device info
 	private NetInfo mNet = null; // network my device connect to
 	// peer connection parameters
@@ -203,16 +205,19 @@ public class ConnectorByWifiIntent extends Activity {
 				// after find devices
 				// auto connect to them
 				// connect from device with small ip to device with large ip
-				if (mDevice.addr.compareTo(device.addr) < 0) {
-					Log.d(TAG, "connect to client: " + device.addr);
-					Intent in = new Intent(Router.ACTION_CONNECT);
-					in.putExtra(Router.PEER_NAME, device.name);
-					in.putExtra(Router.PEER_ADDR, device.addr);
-					in.putExtra(Router.PEER_PORT, device.port);
-					in.putExtra(Router.AUTHENTICATION_TOKEN,
-							securityToken.getBytes());
-					in.putExtra(Router.CONNECT_TIMEOUT, connTimeout);
-					startService(in);
+				if (!connPeers.contains(device.addr)) {
+					if (mDevice.addr.compareTo(device.addr) < 0) {
+						Log.d(TAG, "connect to client: " + device.addr);
+						Intent in = new Intent(Router.ACTION_CONNECT);
+						in.putExtra(Router.PEER_NAME, device.name);
+						in.putExtra(Router.PEER_ADDR, device.addr);
+						in.putExtra(Router.PEER_PORT, device.port);
+						in.putExtra(Router.AUTHENTICATION_TOKEN,
+								securityToken.getBytes());
+						in.putExtra(Router.CONNECT_TIMEOUT, connTimeout);
+						startService(in);
+						connPeers.add(device.addr);
+					}
 				}
 
 			} else if (Router.ACTION_SEARCH_COMPLETE.equals(action)) {
@@ -231,6 +236,7 @@ public class ConnectorByWifiIntent extends Activity {
 				pname = intent.getStringExtra(Router.PEER_NAME);
 				paddr = intent.getStringExtra(Router.PEER_ADDR);
 				pport = intent.getStringExtra(Router.PEER_PORT);
+				connPeers.remove(paddr);
 				device = new DeviceInfo(pname, paddr, pport);
 				delDeviceFromList(device);
 				Log.d(TAG, "a device disconnected: " + device.addr);
@@ -273,6 +279,10 @@ public class ConnectorByWifiIntent extends Activity {
 				in.putExtra(Router.PEER_PORT, device.port);
 				startService(in);
 			} else if (Router.ACTION_CONNECTION_FAILED.equals(action)) {
+				pname = intent.getStringExtra(Router.PEER_NAME);
+				paddr = intent.getStringExtra(Router.PEER_ADDR);
+				pport = intent.getStringExtra(Router.PEER_PORT);
+				connPeers.remove(paddr);
 				Log.d(TAG, "connection_failed");
 			} else if (Router.ACTION_GET_DEVICE_INFO.equals(action)) {
 				pname = intent.getStringExtra(Router.PEER_NAME);
@@ -372,6 +382,8 @@ public class ConnectorByWifiIntent extends Activity {
 				mNet = net;
 				// update GUI
 				updateGuiOnNet(net);
+				// a new network activate, clear foundDevices
+				connPeers.clear();
 				// get my device info at active network
 				Intent in = new Intent(Router.ACTION_GET_DEVICE_INFO);
 				startService(in);

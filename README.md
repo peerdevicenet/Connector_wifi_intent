@@ -1,19 +1,19 @@
 Connector_wifi_intent
 =====================
 
-This sample connector using Router's ConnectionService intenting api to discover and connect to peer devices. It communicates thru external wifi router or WifiDirect network setup among a group of WifiDirect enabled devices.
+This sample connector uses Router's ConnectionService intenting api to discover and connect to peer devices. It communicates thru external wifi router or WifiDirect network setup among a group of WifiDirect enabled devices.
 
-It includes Router project as a library project. So it will instantiate a router service directly, running in a separate process. 
+It will instantiate a router service directly, running in a separate process. 
 
 1. In AndroidManifest.xml, add the following permission to enable accessing router APIs:
 
-		<uses-permission android:name="com.xconns.peerdevicenet.permission.REMOTE_MESSAGING" />
+      <uses-permission android:name="com.xconns.peerdevicenet.permission.REMOTE_MESSAGING" />
 
 	Also since we embed a router instance and we want to expose it for other apps to access, we need to add all Router's manifest info into here.
 
 2. Create a Router instance inside this app by one of two ways:
 
-          * download Router project and include it as a library project.
+          * download Router project and include it as a library project, as the eclipse project does.
           * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-router:1.1.4'.
 
 3. This connector has a single activity ConnectorByWifiIntent with a simple GUI:

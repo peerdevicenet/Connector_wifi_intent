@@ -1,6 +1,8 @@
 Connector_wifi_intent
 =====================
 
+        --- move to http://github.com/xconns-com ---
+
 This sample connector uses Router's ConnectionService intenting api to discover and connect to peer devices. It communicates thru external wifi router or WifiDirect network setup among a group of WifiDirect enabled devices.
 
 It will instantiate a router service directly, running in a separate process. 

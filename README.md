@@ -1,8 +1,6 @@
 Connector_wifi_intent
 =====================
 
-        --- move to http://github.com/xconns-com ---
-
 This sample connector uses Router's ConnectionService intenting api to discover and connect to peer devices. It communicates thru external wifi router or WifiDirect network setup among a group of WifiDirect enabled devices.
 
 It will instantiate a router service directly, running in a separate process. 
@@ -16,7 +14,7 @@ It will instantiate a router service directly, running in a separate process.
 2. Create a Router instance inside this app by one of two ways:
 
           * download Router project and include it as a library project, as the eclipse project does.
-          * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-router:1.1.7'.
+          * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-router:1.1.8'.
 
 3. This connector has a single activity ConnectorByWifiIntent with a simple GUI:
 
